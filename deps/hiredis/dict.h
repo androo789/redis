@@ -57,6 +57,8 @@ typedef struct dictType {
     void (*valDestructor)(void *privdata, void *obj);
 } dictType;
 
+// hash的原理是dict
+// 错了吧，不是这个目录的
 typedef struct dict {
     dictEntry **table;
     dictType *type;

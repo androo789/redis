@@ -31,7 +31,7 @@
 #include <math.h>
 
 /*-----------------------------------------------------------------------------
- * Hash type API
+ * Hash type API  就是hash的函数add，delete等等
  *----------------------------------------------------------------------------*/
 
 /* Check the length of a number of objects to see if we need to convert a

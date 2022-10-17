@@ -45,13 +45,14 @@
 #define DICT_ERR 1
 
 typedef struct dictEntry {
-    void *key;
+    void *key; //k在这里
     union {
-        void *val;
+        void *val; //实际的value
         uint64_t u64;
-        int64_t s64;
+        int64_t s64; //过期时间
         double d;
     } v;
+    // hash冲突时用指针拉链，就是这个
     struct dictEntry *next;     /* Next entry in the same hash bucket. */
     void *metadata[];           /* An arbitrary number of bytes (starting at a
                                  * pointer-aligned address) of size as returned
@@ -76,9 +77,11 @@ typedef struct dictType {
 #define DICTHT_SIZE(exp) ((exp) == -1 ? 0 : (unsigned long)1<<(exp))
 #define DICTHT_SIZE_MASK(exp) ((exp) == -1 ? 0 : (DICTHT_SIZE(exp))-1)
 
+// hash的底层原理是字典
 struct dict {
     dictType *type;
 
+    // 根据版本不同这里源码和网上有一些区别
     dictEntry **ht_table[2];
     unsigned long ht_used[2];
 

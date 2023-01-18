@@ -32,9 +32,15 @@
 #define __INTSET_H
 #include <stdint.h>
 
+// 我都不知道redis还有这种东西。数字集合。
+// 用于保存数字类型在redis中
+// int8，int32，int64编码之间的还能升级。
 typedef struct intset {
     uint32_t encoding;
     uint32_t length;
+    // Int8仅作占位
+    // 数据不重复
+    // 数据从小到大排序
     int8_t contents[];
 } intset;
 

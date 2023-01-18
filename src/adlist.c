@@ -1,4 +1,6 @@
 /* adlist.c - A generic doubly linked list implementation
+一个双端链表的实现
+⁡⁢⁣⁢a d 大概是这个⁡意思
  *
  * Copyright (c) 2006-2010, Salvatore Sanfilippo <antirez at gmail dot com>
  * All rights reserved.

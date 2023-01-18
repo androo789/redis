@@ -33,23 +33,37 @@
 
 /* Node, List, and Iterator are the only data structures used currently. */
 
+// 双端链表中的一个节点
 typedef struct listNode {
+    // 前
     struct listNode *prev;
+    // 后
     struct listNode *next;
+    // 节点上保存的值。这么看来是一个指针能保存一切类型？
     void *value;
 } listNode;
 
+// 迭代器
 typedef struct listIter {
+    // 下一个节点
     listNode *next;
+    // 可以往前，可以往后
     int direction;
 } listIter;
 
+// 双端链表本身
 typedef struct list {
+    // 头。保证了头尾插入都是o(1)时间
     listNode *head;
+    // 尾
     listNode *tail;
+    // 复制函数
     void *(*dup)(void *ptr);
+    // 释放函数
     void (*free)(void *ptr);
+    // 比较函数
     int (*match)(void *ptr, void *key);
+    // 链表长度。保证了计算长度是o(1)时间
     unsigned long len;
 } list;
 

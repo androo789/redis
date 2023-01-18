@@ -36,7 +36,10 @@
 #include "sds.h"
 #include "zmalloc.h"
 
+// 新建一个sds
+// 参数init表示输入的字符串的地址
 sds sdsnewlen(const void *init, size_t initlen) {
+    // 有个sds头
     struct sdshdr *sh;
 
     if (init) {
@@ -48,8 +51,11 @@ sds sdsnewlen(const void *init, size_t initlen) {
     sh->len = initlen;
     sh->free = 0;
     if (initlen && init)
+    // 第一个参数dst，第二次参数src。
         memcpy(sh->buf, init, initlen);
+    // 还是需要补一个0
     sh->buf[initlen] = '\0';
+    // 把buf作为sds返回出去
     return (char*)sh->buf;
 }
 
@@ -91,6 +97,7 @@ void sdsclear(sds s) {
  * 
  * Note: this does not change the *size* of the sds string as returned
  * by sdslen(), but only the free buffer space we have. */
+// 预分配的策略
 sds sdsMakeRoomFor(sds s, size_t addlen) {
     struct sdshdr *sh, *newsh;
     size_t free = sdsavail(s);
@@ -101,7 +108,7 @@ sds sdsMakeRoomFor(sds s, size_t addlen) {
     sh = (void*) (s-(sizeof(struct sdshdr)));
     newlen = (len+addlen);
     if (newlen < SDS_MAX_PREALLOC)
-        newlen *= 2;
+        newlen *= 2; //长度变为2倍
     else
         newlen += SDS_MAX_PREALLOC;
     newsh = zrealloc(sh, sizeof(struct sdshdr)+newlen+1);

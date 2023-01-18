@@ -126,7 +126,10 @@
 #define REDIS_CMD_STALE 1024                /* "t" flag */
 #define REDIS_CMD_SKIP_MONITOR 2048         /* "M" flag */
 
-/* Object types */
+/* Object types 
+类⁡⁢⁣⁢型都在这里
+一⁡共5种
+*/
 #define REDIS_STRING 0
 #define REDIS_LIST 1
 #define REDIS_SET 2
@@ -135,7 +138,8 @@
 
 /* Objects encoding. Some kind of objects like Strings and Hashes can be
  * internally represented in multiple ways. The 'encoding' field of the object
- * is set to one of this fields for this object. */
+ * is set to one of this fields for this object. 
+ * 编⁡⁢⁣⁢码方式都在这里。字典还是压缩列表⁡等等*/
 #define REDIS_ENCODING_RAW 0     /* Raw representation */
 #define REDIS_ENCODING_INT 1     /* Encoded as integer */
 #define REDIS_ENCODING_HT 2      /* Encoded as hash table */
@@ -317,6 +321,12 @@
 /* The actual Redis Object */
 #define REDIS_LRU_CLOCK_MAX ((1<<21)-1) /* Max value of obj->lru */
 #define REDIS_LRU_CLOCK_RESOLUTION 10 /* LRU clock resolution in seconds */
+
+
+// redis的类型系统，对象处理机制
+// 操作hash的时候用户不知道是压缩列表还是字典实现的。但是redis必须知道
+// 必须适配，
+// 这多态？
 typedef struct redisObject {
     unsigned type:4;
     unsigned notused:2;     /* Not used */
@@ -446,23 +456,34 @@ struct sharedObjectsStruct {
     *bulkhdr[REDIS_SHARED_BULKHDR_LEN];  /* "$<value>\r\n" */
 };
 
-/* ZSETs use a specialized version of Skiplists */
+/* ZSETs use a specialized version of Skiplists 
+跳跃表中的一个节点*/
 typedef struct zskiplistNode {
+    // 具体存储的value
     robj *obj;
+    // 分数
     double score;
+    // 后节点
     struct zskiplistNode *backward;
     struct zskiplistLevel {
+        // 前节点
         struct zskiplistNode *forward;
+        // 这⁡⁢⁣⁢个层跨越的节点数⁡量
         unsigned int span;
     } level[];
 } zskiplistNode;
 
+// 跳跃表
 typedef struct zskiplist {
+    // 头结点，尾节点
     struct zskiplistNode *header, *tail;
+    // 当前元素数量
     unsigned long length;
+    // 当前层数
     int level;
 } zskiplist;
 
+// zset是由字典和跳跃表 实现的
 typedef struct zset {
     dict *dict;
     zskiplist *zsl;

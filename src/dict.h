@@ -44,6 +44,7 @@
 /* Unused arguments generate annoying warnings... */
 #define DICT_NOTUSED(V) ((void) V)
 
+//hash数组中的每一个元素都是一个dictEntry
 typedef struct dictEntry {
     void *key;
     union {
@@ -51,7 +52,7 @@ typedef struct dictEntry {
         uint64_t u64;
         int64_t s64;
     } v;
-    struct dictEntry *next;
+    struct dictEntry *next;  //拉链法解决冲突问题
 } dictEntry;
 
 typedef struct dictType {
@@ -65,18 +66,28 @@ typedef struct dictType {
 
 /* This is our hash table structure. Every dictionary has two of this as we
  * implement incremental rehashing, for the old to the new table. */
+// hash表的实现
 typedef struct dictht {
-    dictEntry **table;
-    unsigned long size;
-    unsigned long sizemask;
-    unsigned long used;
+    dictEntry **table; //指向数组的指针
+    unsigned long size; //数组中元素的数量
+    unsigned long sizemask; //数组中元素的数量-1，用于使用&替换取余，计算idx
+    unsigned long used; //表示这个数组仍在使用的元素数量，在rehash中使用
+
+    // used可能大于size。size仅仅是数组的长度，但是used把拉链的也算上了
 } dictht;
 
+
+/*
+~
+*/
+//~ dict的实现
 typedef struct dict {
     dictType *type;
     void *privdata;
-    dictht ht[2];
+    dictht ht[2]; //两个hash表（字典表）
+    // rehash的进度条啊，-1表示没有在rehash
     int rehashidx; /* rehashing not in progress if rehashidx == -1 */
+    // 迭代器
     int iterators; /* number of iterators currently running */
 } dict;
 

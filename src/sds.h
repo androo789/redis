@@ -36,15 +36,18 @@
 #include <sys/types.h>
 #include <stdarg.h>
 
+// 是char的重命名。看看和sdshdr是怎么联系的？
 typedef char *sds;
 
+//对c语言的 char进行一层封装
 struct sdshdr {
-    int len;
-    int free;
-    char buf[];
+    int len; //已用长度
+    int free; //剩余可用长度
+    char buf[]; //实际保存字符串的地方，实际就是sds
 };
 
 static inline size_t sdslen(const sds s) {
+    // 指针的移动，转为一个结构体。也是c的常见操作了
     struct sdshdr *sh = (void*)(s-(sizeof(struct sdshdr)));
     return sh->len;
 }

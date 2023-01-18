@@ -1,7 +1,12 @@
 /* A simple event-driven programming library. Originally I wrote this code
  * for the Jim's event-loop (Jim is a Tcl interpreter) but later translated
  * it in form of a library for easy reuse.
- *
+⁡⁢⁣⁢一个事件驱动器的实现
+e肯定是事件
+没想到a就是一个
+a e⁡
+
+ * 
  * Copyright (c) 2006-2010, Salvatore Sanfilippo <antirez at gmail dot com>
  * All rights reserved.
  *
@@ -45,7 +50,14 @@
 #include "config.h"
 
 /* Include the best multiplexing layer supported by this system.
- * The following should be ordered by performances, descending. */
+ * The following should be ordered by performances, descending. 
+ 
+ 按操作系⁡⁢⁣⁢统选择适当的io多路复用实现
+ 相当于一个一个接口，多⁡个实现
+ 2
+ 从上到下也是性能从最好到最坏
+ 
+ */
 #ifdef HAVE_EVPORT
 #include "ae_evport.c"
 #else
